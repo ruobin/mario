@@ -31,7 +31,7 @@ public class Map {
 	}
 
 	private void loadBinary () {
-		Pixmap pixmap = new Pixmap(Gdx.files.internal("data/levels.png"));
+		Pixmap pixmap = new Pixmap(Gdx.files.internal("data/levels2.png"));
 		tiles = new int[pixmap.getWidth()][pixmap.getHeight()];
 		for (int y = 0; y < 35; y++) {
 			for (int x = 0; x < 150; x++) {
