@@ -9,7 +9,8 @@ import com.badlogic.gdx.math.Vector2;
 public class Bob {
 	static final int IDLE = 0;
 	static final int RUN = 1;
-	static final int JUMP = 2;
+	static final int FIRST_JUMP = 10;
+	static final int SECOND_JUMP = 11;
 	static final int SPAWN = 3;
 	static final int DYING = 4;
 	static final int DEAD = 5;
@@ -81,25 +82,44 @@ public class Bob {
 
 		boolean leftButton = (Gdx.input.isTouched(0) && x0 < 70) || (Gdx.input.isTouched(1) && x1 < 70);
 		boolean rightButton = (Gdx.input.isTouched(0) && x0 > 70 && x0 < 134) || (Gdx.input.isTouched(1) && x1 > 70 && x1 < 134);
-		boolean jumpButton = (Gdx.input.isTouched(0) && x0 > 416 && x0 < 480 && y0 < 64)
-			|| (Gdx.input.isTouched(1) && x1 > 416 && x1 < 480 && y0 < 64);
+		boolean jumpButton = (Gdx.input.justTouched() && Gdx.input.isTouched(0) && x0 > 416 && x0 < 480 && y0 < 64)
+			|| (Gdx.input.justTouched() && Gdx.input.isTouched(1) && x1 > 416 && x1 < 480 && y0 < 64);
 
-		if ((Gdx.input.isKeyPressed(Keys.W) || jumpButton) && state != JUMP) {
-			state = JUMP;
+		if ((Gdx.input.isKeyPressed(Keys.W) || jumpButton) && state == FIRST_JUMP) {
+			System.out.println("jumpButton && state == FIRST_JUMP");
+			state = SECOND_JUMP;
 			vel.y = JUMP_VELOCITY;
 			grounded = false;
+			return;
+		}
+
+		if ((Gdx.input.isKeyPressed(Keys.W) || jumpButton) && state != FIRST_JUMP && state != SECOND_JUMP) {
+			System.out.println("jumpButton && state != FIRST_JUMP && state != SECOND_JUMP");
+			state = FIRST_JUMP;
+			vel.y = JUMP_VELOCITY;
+			grounded = false;
+			return;
 		}
 
 		if (Gdx.input.isKeyPressed(Keys.A) || leftButton) {
-			if (state != JUMP) state = RUN;
+			if (state != FIRST_JUMP && state != SECOND_JUMP) {
+				System.out.println("state = RUN;");
+				state = RUN;
+			}
 			dir = LEFT;
 			accel.x = ACCELERATION * dir;
 		} else if (Gdx.input.isKeyPressed(Keys.D) || rightButton) {
-			if (state != JUMP) state = RUN;
+			if (state != FIRST_JUMP && state != SECOND_JUMP) {
+				System.out.println("state = RUN;");
+				state = RUN;
+			}
 			dir = RIGHT;
 			accel.x = ACCELERATION * dir;
 		} else {
-			if (state != JUMP) state = IDLE;
+			if (state != FIRST_JUMP && state != SECOND_JUMP) {
+				System.out.println("state = IDLE;");
+				state = IDLE;
+			}
 			accel.x = 0;
 		}
 	}

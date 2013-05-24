@@ -147,7 +147,7 @@ public class MapRenderer {
 		batch.end();
 		renderLaserBeams();
 
-		fps.log();
+//		fps.log();
 	}
 
 	private void renderBob () {
@@ -165,7 +165,7 @@ public class MapRenderer {
 			else
 				anim = bobIdleRight;
 		}
-		if (map.bob.state == Bob.JUMP) {
+		if (map.bob.state == Bob.FIRST_JUMP || map.bob.state == Bob.SECOND_JUMP) {
 			if (map.bob.dir == Bob.LEFT)
 				anim = bobJumpLeft;
 			else
