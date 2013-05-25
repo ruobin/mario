@@ -75,9 +75,9 @@ public class Rocket {
 			return true;
 		}
 
-		if (bounds.overlaps(map.cube.bounds)) {
-			return true;
-		}
+//		if (bounds.overlaps(map.cube.bounds)) {
+//			return true;
+//		}
 
 		return false;
 	}

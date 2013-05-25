@@ -89,9 +89,9 @@ public class MovingSpikes {
 			}
 		}
 
-		if (map.cube.bounds.overlaps(bounds)) {
-			map.cube.state = Cube.DEAD;
-			map.cube.stateTime = 0;
-		}
+//		if (map.cube.bounds.overlaps(bounds)) {
+//			map.cube.state = Cube.DEAD;
+//			map.cube.stateTime = 0;
+//		}
 	}
 }

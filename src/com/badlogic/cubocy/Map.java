@@ -15,15 +15,17 @@ public class Map {
 	static int ROCKET = 0x0000ff;
 	static int MOVING_SPIKES = 0xffff00;
 	static int LASER = 0x00ffff;
+	static int MEDALLION = 0xffaec9;
 
 	int[][] tiles;
 	public Bob bob;
-	Cube cube;
+//	Cube cube;
 	Array<Dispenser> dispensers = new Array<Dispenser>();
 	Dispenser activeDispenser = null;
 	Array<Rocket> rockets = new Array<Rocket>();
 	Array<MovingSpikes> movingSpikes = new Array<MovingSpikes>();
 	Array<Laser> lasers = new Array<Laser>();
+	Array<Medallion> medallions = new Array<Medallion>();
 	public EndDoor endDoor;
 
 	public Map () {
@@ -42,8 +44,8 @@ public class Map {
 					activeDispenser = dispenser;
 					bob = new Bob(this, activeDispenser.bounds.x, activeDispenser.bounds.y);
 					bob.state = Bob.SPAWN;
-					cube = new Cube(this, activeDispenser.bounds.x, activeDispenser.bounds.y);
-					cube.state = Cube.DEAD;
+//					cube = new Cube(this, activeDispenser.bounds.x, activeDispenser.bounds.y);
+//					cube.state = Cube.DEAD;
 				} else if (match(pix, DISPENSER)) {
 					Dispenser dispenser = new Dispenser(x, pixmap.getHeight() - 1 - y);
 					dispensers.add(dispenser);
@@ -54,6 +56,8 @@ public class Map {
 					movingSpikes.add(new MovingSpikes(this, x, pixmap.getHeight() - 1 - y));
 				} else if (match(pix, LASER)) {
 					lasers.add(new Laser(this, x, pixmap.getHeight() - 1 - y));
+				} else if (match(pix, MEDALLION)) {
+					medallions.add(new Medallion(this, x, pixmap.getHeight() - 1 - y));
 				} else if (match(pix, END)) {
 					endDoor = new EndDoor(x, pixmap.getHeight() - 1 - y);
 				} else {
@@ -77,8 +81,8 @@ public class Map {
 	public void update (float deltaTime) {
 		bob.update(deltaTime);
 		if (bob.state == Bob.DEAD) bob = new Bob(this, activeDispenser.bounds.x, activeDispenser.bounds.y);
-		cube.update(deltaTime);
-		if (cube.state == Cube.DEAD) cube = new Cube(this, bob.bounds.x, bob.bounds.y);
+//		cube.update(deltaTime);
+//		if (cube.state == Cube.DEAD) cube = new Cube(this, bob.bounds.x, bob.bounds.y);
 		for (int i = 0; i < dispensers.size; i++) {
 			if (bob.bounds.overlaps(dispensers.get(i).bounds)) {
 				activeDispenser = dispensers.get(i);
@@ -87,6 +91,10 @@ public class Map {
 		for (int i = 0; i < rockets.size; i++) {
 			Rocket rocket = rockets.get(i);
 			rocket.update(deltaTime);
+		}
+		for (int i = 0; i < medallions.size; i++) {
+			Medallion medallion = medallions.get(i);
+			medallion.update(deltaTime);
 		}
 		for (int i = 0; i < movingSpikes.size; i++) {
 			MovingSpikes spikes = movingSpikes.get(i);

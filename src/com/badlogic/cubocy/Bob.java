@@ -56,6 +56,7 @@ public class Bob {
 		if (vel.x < -MAX_VEL) vel.x = -MAX_VEL;
 		vel.scl(deltaTime);
 		tryMove();
+		
 		vel.scl(1.0f / deltaTime);
 
 		if (state == SPAWN) {
@@ -73,8 +74,9 @@ public class Bob {
 		stateTime += deltaTime;
 	}
 
+
 	private void processKeys () {
-		if (map.cube.state == Cube.CONTROLLED || state == SPAWN || state == DYING) return;
+//		if (map.cube.state == Cube.CONTROLLED || state == SPAWN || state == DYING) return;
 
 		float x0 = (Gdx.input.getX(0) / (float)Gdx.graphics.getWidth()) * 480;
 		float x1 = (Gdx.input.getX(1) / (float)Gdx.graphics.getWidth()) * 480;
@@ -86,7 +88,7 @@ public class Bob {
 			|| (Gdx.input.justTouched() && Gdx.input.isTouched(1) && x1 > 416 && x1 < 480 && y0 < 64);
 
 		if ((Gdx.input.isKeyPressed(Keys.W) || jumpButton) && state == FIRST_JUMP) {
-			System.out.println("jumpButton && state == FIRST_JUMP");
+//			System.out.println("jumpButton && state == FIRST_JUMP");
 			state = SECOND_JUMP;
 			vel.y = JUMP_VELOCITY;
 			grounded = false;
@@ -94,7 +96,7 @@ public class Bob {
 		}
 
 		if ((Gdx.input.isKeyPressed(Keys.W) || jumpButton) && state != FIRST_JUMP && state != SECOND_JUMP) {
-			System.out.println("jumpButton && state != FIRST_JUMP && state != SECOND_JUMP");
+//			System.out.println("jumpButton && state != FIRST_JUMP && state != SECOND_JUMP");
 			state = FIRST_JUMP;
 			vel.y = JUMP_VELOCITY;
 			grounded = false;
@@ -103,21 +105,21 @@ public class Bob {
 
 		if (Gdx.input.isKeyPressed(Keys.A) || leftButton) {
 			if (state != FIRST_JUMP && state != SECOND_JUMP) {
-				System.out.println("state = RUN;");
+//				System.out.println("state = RUN;");
 				state = RUN;
 			}
 			dir = LEFT;
 			accel.x = ACCELERATION * dir;
 		} else if (Gdx.input.isKeyPressed(Keys.D) || rightButton) {
 			if (state != FIRST_JUMP && state != SECOND_JUMP) {
-				System.out.println("state = RUN;");
+//				System.out.println("state = RUN;");
 				state = RUN;
 			}
 			dir = RIGHT;
 			accel.x = ACCELERATION * dir;
 		} else {
 			if (state != FIRST_JUMP && state != SECOND_JUMP) {
-				System.out.println("state = IDLE;");
+//				System.out.println("state = IDLE;");
 				state = IDLE;
 			}
 			accel.x = 0;
@@ -197,12 +199,12 @@ public class Bob {
 		else
 			r[3].set(-1, -1, 0, 0);
 
-		if (map.cube.state == Cube.FIXED) {
-			r[4].x = map.cube.bounds.x;
-			r[4].y = map.cube.bounds.y;
-			r[4].width = map.cube.bounds.width;
-			r[4].height = map.cube.bounds.height;
-		} else
-			r[4].set(-1, -1, 0, 0);
+//		if (map.cube.state == Cube.FIXED) {
+//			r[4].x = map.cube.bounds.x;
+//			r[4].y = map.cube.bounds.y;
+//			r[4].width = map.cube.bounds.width;
+//			r[4].height = map.cube.bounds.height;
+//		} else
+//			r[4].set(-1, -1, 0, 0);
 	}
 }

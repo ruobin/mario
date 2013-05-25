@@ -33,6 +33,7 @@ public class MapRenderer {
 	Animation cubeFixed;
 	TextureRegion cubeControlled;
 	TextureRegion dispenser;
+	TextureRegion medallion;
 	Animation spawn;
 	Animation dying;
 	TextureRegion spikes;
@@ -99,8 +100,10 @@ public class MapRenderer {
 		cubeControlled = split[0];
 		spawn = new Animation(0.1f, split[4], split[3], split[2], split[1]);
 		dying = new Animation(0.1f, split[1], split[2], split[3], split[4]);
-		dispenser = split[5];
+		dispenser = split[5];	
+		
 		split = new TextureRegion(bobTexture).split(20, 20)[3];
+		medallion = split[5];
 		rocket = new Animation(0.1f, split[0], split[1], split[2], split[3]);
 		rocketPad = split[4];
 		split = new TextureRegion(bobTexture).split(20, 20)[4];
@@ -115,10 +118,10 @@ public class MapRenderer {
 	Vector3 lerpTarget = new Vector3();
 
 	public void render (float deltaTime) {
-		if (map.cube.state != Cube.CONTROLLED)
+//		if (map.cube.state != Cube.CONTROLLED)
 			cam.position.lerp(lerpTarget.set(map.bob.pos.x, map.bob.pos.y, 0), 2f * deltaTime);
-		else
-			cam.position.lerp(lerpTarget.set(map.cube.pos.x, map.cube.pos.y, 0), 2f * deltaTime);
+//		else
+//			cam.position.lerp(lerpTarget.set(map.cube.pos.x, map.cube.pos.y, 0), 2f * deltaTime);
 		cam.update();
 
 		renderLaserBeams();
@@ -138,16 +141,20 @@ public class MapRenderer {
 		batch.setProjectionMatrix(cam.combined);
 		batch.begin();
 		renderDispensers();
+		renderMedallions();
+		
 		if (map.endDoor != null) batch.draw(endDoor, map.endDoor.bounds.x, map.endDoor.bounds.y, 1, 1);
 		renderLasers();
 		renderMovingSpikes();
 		renderBob();
-		renderCube();
+//		renderCube();
 		renderRockets();
+		
 		batch.end();
 		renderLaserBeams();
+		
 
-//		fps.log();
+// fps.log();
 	}
 
 	private void renderBob () {
@@ -182,12 +189,12 @@ public class MapRenderer {
 		batch.draw(anim.getKeyFrame(map.bob.stateTime, loop), map.bob.pos.x, map.bob.pos.y, 1, 1);
 	}
 
-	private void renderCube () {
-		if (map.cube.state == Cube.FOLLOW) batch.draw(cube, map.cube.pos.x, map.cube.pos.y, 1.5f, 1.5f);
-		if (map.cube.state == Cube.FIXED)
-			batch.draw(cubeFixed.getKeyFrame(map.cube.stateTime, false), map.cube.pos.x, map.cube.pos.y, 1.5f, 1.5f);
-		if (map.cube.state == Cube.CONTROLLED) batch.draw(cubeControlled, map.cube.pos.x, map.cube.pos.y, 1.5f, 1.5f);
-	}
+//	private void renderCube () {
+//		if (map.cube.state == Cube.FOLLOW) batch.draw(cube, map.cube.pos.x, map.cube.pos.y, 1.5f, 1.5f);
+//		if (map.cube.state == Cube.FIXED)
+//			batch.draw(cubeFixed.getKeyFrame(map.cube.stateTime, false), map.cube.pos.x, map.cube.pos.y, 1.5f, 1.5f);
+//		if (map.cube.state == Cube.CONTROLLED) batch.draw(cubeControlled, map.cube.pos.x, map.cube.pos.y, 1.5f, 1.5f);
+//	}
 
 	private void renderRockets () {
 		for (int i = 0; i < map.rockets.size; i++) {
@@ -201,6 +208,16 @@ public class MapRenderer {
 			}
 			batch.draw(rocketPad, rocket.startPos.x, rocket.startPos.y, 1, 1);
 		}
+	}
+
+	private void renderMedallions () {
+		for (int i = 0; i < map.medallions.size; i++) {
+			Medallion medallion = map.medallions.get(i);
+			if(medallion.isVisible()){
+				batch.draw(this.medallion, medallion.bounds.x, medallion.bounds.y, 1, 1);
+			}
+		}
+
 	}
 
 	private void renderDispensers () {
