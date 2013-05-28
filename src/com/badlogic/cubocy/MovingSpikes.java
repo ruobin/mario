@@ -4,31 +4,20 @@ package com.badlogic.cubocy;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-public class MovingSpikes {
-	static final int FORWARD = 1;
-	static final int BACKWARD = -1;
-	static final float FORWARD_VEL = 10;
-	static final float BACKWARD_VEL = 4;
+public class MovingSpikes extends AbstractMob{
+	
+	static final float FORWARD_VEL_MOVINGSPIKES = 10;
+	static final float BACKWARD_VEL_MOVINGSPIKES = 4;
 
 	int state = FORWARD;
-
-	Map map;
-	Rectangle bounds = new Rectangle();
-	Vector2 vel = new Vector2();
-	Vector2 pos = new Vector2();
-	float angle = 0;
+	
 	int fx = 0;
 	int fy = 0;
 	int bx = 0;
 	int by = 0;
 
 	public MovingSpikes (Map map, float x, float y) {
-		this.map = map;
-		pos.x = x;
-		pos.y = y;
-		bounds.x = x;
-		bounds.y = y;
-		bounds.width = bounds.height = 1;
+		super(map, x, y);
 	}
 
 	public void init () {
@@ -41,28 +30,34 @@ public class MovingSpikes {
 		int bottom = map.tiles[ix][map.tiles[0].length - 1 - iy + 1];
 
 		if (left == Map.TILE) {
-			vel.x = FORWARD_VEL;
+			vel.x = FORWARD_VEL_MOVINGSPIKES;
 			angle = -90;
 			fx = 1;
 		}
 		if (right == Map.TILE) {
-			vel.x = -FORWARD_VEL;
+			vel.x = -FORWARD_VEL_MOVINGSPIKES;
 			angle = 90;
 			bx = 1;
 		}
 		if (top == Map.TILE) {
-			vel.y = -FORWARD_VEL;
+			vel.y = -FORWARD_VEL_MOVINGSPIKES;
 			angle = 180;
 			by = -1;
 		}
 		if (bottom == Map.TILE) {
-			vel.y = FORWARD_VEL;
+			vel.y = FORWARD_VEL_MOVINGSPIKES;
 			angle = 0;
 			fy = -1;
 		}
 	}
 
 	public void update (float deltaTime) {
+		move(deltaTime);
+		
+		checkHitBob();
+	}
+	
+	protected void move(float deltaTime){
 		pos.add(vel.x * deltaTime, vel.y * deltaTime);
 		boolean change = false;
 		if (state == FORWARD) {
@@ -75,23 +70,8 @@ public class MovingSpikes {
 			pos.y -= vel.y * deltaTime;
 			state = -state;
 			vel.scl(-1);
-			if (state == FORWARD) vel.nor().scl(FORWARD_VEL);
-			if (state == BACKWARD) vel.nor().scl(BACKWARD_VEL);
+			if (state == FORWARD) vel.nor().scl(FORWARD_VEL_MOVINGSPIKES);
+			if (state == BACKWARD) vel.nor().scl(BACKWARD_VEL_MOVINGSPIKES);
 		}
-
-		bounds.x = pos.x;
-		bounds.y = pos.y;
-
-		if (map.bob.bounds.overlaps(bounds)) {
-			if (map.bob.state != Bob.DYING) {
-				map.bob.state = Bob.DYING;
-				map.bob.stateTime = 0;
-			}
-		}
-
-//		if (map.cube.bounds.overlaps(bounds)) {
-//			map.cube.state = Cube.DEAD;
-//			map.cube.stateTime = 0;
-//		}
 	}
 }

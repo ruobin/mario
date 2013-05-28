@@ -24,6 +24,7 @@ public class Map {
 	Dispenser activeDispenser = null;
 	Array<Rocket> rockets = new Array<Rocket>();
 	Array<MovingSpikes> movingSpikes = new Array<MovingSpikes>();
+	Array<FlyingMob> flyingMobs = new Array<FlyingMob>();
 	Array<Laser> lasers = new Array<Laser>();
 	Array<Medallion> medallions = new Array<Medallion>();
 	public EndDoor endDoor;
@@ -54,10 +55,11 @@ public class Map {
 					rockets.add(rocket);
 				} else if (match(pix, MOVING_SPIKES)) {
 					movingSpikes.add(new MovingSpikes(this, x, pixmap.getHeight() - 1 - y));
-				} else if (match(pix, LASER)) {
-					lasers.add(new Laser(this, x, pixmap.getHeight() - 1 - y));
+//				} else if (match(pix, LASER)) {
+//					lasers.add(new Laser(this, x, pixmap.getHeight() - 1 - y));
 				} else if (match(pix, MEDALLION)) {
-					medallions.add(new Medallion(this, x, pixmap.getHeight() - 1 - y));
+//					medallions.add(new Medallion(this, x, pixmap.getHeight() - 1 - y));
+					flyingMobs.add(new FlyingMob(this, x, pixmap.getHeight() - 1 - y));
 				} else if (match(pix, END)) {
 					endDoor = new EndDoor(x, pixmap.getHeight() - 1 - y);
 				} else {
@@ -68,6 +70,9 @@ public class Map {
 
 		for (int i = 0; i < movingSpikes.size; i++) {
 			movingSpikes.get(i).init();
+		}
+		for (int i = 0; i < flyingMobs.size; i++) {
+			flyingMobs.get(i).init();
 		}
 		for (int i = 0; i < lasers.size; i++) {
 			lasers.get(i).init();
@@ -99,6 +104,10 @@ public class Map {
 		for (int i = 0; i < movingSpikes.size; i++) {
 			MovingSpikes spikes = movingSpikes.get(i);
 			spikes.update(deltaTime);
+		}
+		for (int i = 0; i < flyingMobs.size; i++) {
+			FlyingMob mobs = flyingMobs.get(i);
+			mobs.update(deltaTime);
 		}
 		for (int i = 0; i < lasers.size; i++) {
 			lasers.get(i).update();

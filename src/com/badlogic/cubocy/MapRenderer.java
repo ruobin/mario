@@ -42,6 +42,7 @@ public class MapRenderer {
 	TextureRegion rocketPad;
 	TextureRegion endDoor;
 	TextureRegion movingSpikes;
+	TextureRegion flyingMob;
 	TextureRegion laser;
 	FPSLogger fps = new FPSLogger();
 
@@ -111,6 +112,7 @@ public class MapRenderer {
 		split = new TextureRegion(bobTexture).split(20, 20)[5];
 		endDoor = split[2];
 		movingSpikes = split[0];
+		flyingMob = split[0];
 		laser = split[1];
 	}
 
@@ -146,6 +148,7 @@ public class MapRenderer {
 		if (map.endDoor != null) batch.draw(endDoor, map.endDoor.bounds.x, map.endDoor.bounds.y, 1, 1);
 		renderLasers();
 		renderMovingSpikes();
+		renderFlyingMobs();
 		renderBob();
 //		renderCube();
 		renderRockets();
@@ -231,6 +234,13 @@ public class MapRenderer {
 		for (int i = 0; i < map.movingSpikes.size; i++) {
 			MovingSpikes spikes = map.movingSpikes.get(i);
 			batch.draw(movingSpikes, spikes.pos.x, spikes.pos.y, 0.5f, 0.5f, 1, 1, 1, 1, spikes.angle);
+		}
+	}
+	
+	private void renderFlyingMobs () {
+		for (int i = 0; i < map.flyingMobs.size; i++) {
+			FlyingMob mob = map.flyingMobs.get(i);
+			batch.draw(flyingMob, mob.pos.x, mob.pos.y, 0.5f, 0.5f, 1, 1, 1, 1, mob.angle);
 		}
 	}
 
