@@ -76,6 +76,7 @@ public class Bob {
 
 
 	private void processKeys () {
+		if (state == SPAWN || state == DYING) return;
 //		if (map.cube.state == Cube.CONTROLLED || state == SPAWN || state == DYING) return;
 
 		float x0 = (Gdx.input.getX(0) / (float)Gdx.graphics.getWidth()) * 480;
